@@ -54,8 +54,20 @@ class FormularioPrincipal(tk.Tk):
         self.menu_archivos.add_command(label="Nuevo", accelerator="Ctrl+N", command=archivo_nuevo_presionado)
         self.menu_archivos.add_command(label="Abrir", accelerator="Ctrl+A", command=archivo_nuevo_presionado)
         self.menu_archivos.add_command(label="Guardar", accelerator="Ctrl+G", command=archivo_nuevo_presionado)
+        self.menu_archivos.add_command(label="")
+        self.menu_archivos.add_separator()# agrega linea divisoria        
+        self.menu_archivos.add_command(label="Salir",accelerator="Ctrl+S", command=archivo_nuevo_presionado)
         # al precionar archivo le decimos que se despliegue hacia abajo
         self.barra_menus.add_cascade(menu=self.menu_archivos, label="Archivo")
+
+        # colocamos menu herramientas dentro de barra_menus
+        self.menu_herramientas = tk.Menu(self.barra_menus, tearoff=False)
+        # agregamos todos los comandos que va a tener el menu herramientas
+        self.menu_herramientas.add_command(label="Fuente", accelerator="Ctrl+F", command=archivo_nuevo_presionado)
+        self.menu_herramientas.add_command(label="Tamaño", accelerator="Ctrl+T", command=archivo_nuevo_presionado)
+        self.menu_herramientas.add_command(label="Color", accelerator="Ctrl+C", command=archivo_nuevo_presionado)
+        # al precionar herramientas le decimos que despliegue hacia abajo
+        self.barra_menus.add_cascade(menu=self.menu_herramientas, label="Herramientas")
         self.config(menu=self.barra_menus)
     
         
