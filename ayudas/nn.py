@@ -1,24 +1,21 @@
 import tkinter as tk  
+from tkinter import scrolledtext, filedialog  
 
-'''def mostrar_menu(event):  
-    menu.post(event.x_root, event.y_root)'''  
+def abrir_archivo():  
+    archivo = filedialog.askopenfilename(defaultextension=".py",  
+                                          filetypes=[("Archivos de texto", "*.py"),  
+                                                     ("Todos los archivos", "*.*")])  
+    if archivo:  
+        with open(archivo, 'r') as f:  
+            contenido = f.read()  
+            texto_area.delete(1.0, tk.END)  # Limpiar el área de texto antes de cargar nuevo contenido  
+            texto_area.insert(tk.END, contenido)  
 
-# creo ventana
-ventana = tk.Tk()  
-ventana.geometry("200x200")  
+root = tk.Tk()  
+texto_area = scrolledtext.ScrolledText(root)  
+texto_area.pack(expand=True, fill='both')  
 
-# creo menu
-menu = tk.Menu(ventana, tearoff=0)  
-menu.add_command(label="Opción 1")  
-menu.add_command(label="Opción 2")  
-menu.add_command(label="Opción 3")  
+boton = tk.Button(root, text="Abrir Archivo", command=abrir_archivo)  
+boton.pack()  
 
-# creo boton
-boton = tk.Button(ventana, text="Desplegar Menú")  
-boton.pack(pady=20)  
-
-# le asigno la funcion al boton
-boton.bind("<Enter>", lambda event: menu.post(event.x_root, event.y_root))  
-#boton.bind("<Leave>", lambda event: menu.unpost())
-
-ventana.mainloop()
+root.mainloop()

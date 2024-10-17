@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import utileria.util_ventana as util_ventana
 from config import *
-# from formulario.menu_abrir import Abrir
+from tkinter import scrolledtext, filedialog
 
 class FormularioPrincipal(tk.Tk):
     
@@ -10,7 +10,7 @@ class FormularioPrincipal(tk.Tk):
         super().__init__()
         self.config_windows()
         self.frames_entry()
-        self.conf_barra_superior ()
+        self.conf_barra_texto ()
         self.configuracion_buttons()
     
     def config_windows(self):
@@ -35,9 +35,9 @@ class FormularioPrincipal(tk.Tk):
         self.frame_barra_inferior = tk.Frame(self.frame_ventana_principal, bg=COLOR_BARRA_SUPERIOR, height=25)
         self.frame_barra_inferior.pack(side=tk.BOTTOM, fill="both", expand=False)
 
-    def conf_barra_superior(self):        
+    def conf_barra_texto(self):        
         # hoja de texto
-        self.text = tk.Text(self.frame_ventana_principal, width=50)
+        self.text = scrolledtext.ScrolledText(self.frame_ventana_principal, width=50)
         self.text.place()
         self.text.pack(ipadx=250, ipady=1200, padx=50, pady=(20,0))
 
@@ -47,25 +47,51 @@ class FormularioPrincipal(tk.Tk):
         def archivo_nuevo_presionado():
             print("¡Has presionado para crear un nuevo archivo!")
 
+        def archivo_nuevo():
+            self.text.delete(1.0, tk.END)
+
+        def abrir_archivo():
+            # abre la ventana con archivos en el pc 
+            archivo = filedialog.askopenfilename(defaultextension=".txt", 
+                                                 filetypes=[("Archivos de texto", ".txt"),
+                                                            ("Todos los archivos", "*.*")])
+            # si archivo == true
+            if archivo:
+                # abrimos el archivo en modo lectura
+                with open(archivo, "r") as f:
+                    # almacenamos el texto en la variable contenido
+                    contenido = f.read()
+                    # borramos lo que sea que este en la hoja actual
+                    self.text.delete(1.0, tk.END)
+                    # insertamos en la hoja el texto de dentro de contenido
+                    self.text.insert(tk.END, contenido)
+
         #  ---creamos el menu desplegable---
         # colocamos menu_archivos dentro de barra_menus
         self.menu_archivos = tk.Menu(self.barra_menus, tearoff=False)
         # agregamos todos los comandos que va a tener el menu archivos
-        self.menu_archivos.add_command(label="Nuevo", accelerator="Ctrl+N", command=archivo_nuevo_presionado)
-        self.menu_archivos.add_command(label="Abrir", accelerator="Ctrl+A", command=archivo_nuevo_presionado)
-        self.menu_archivos.add_command(label="Guardar", accelerator="Ctrl+G", command=archivo_nuevo_presionado)
+        self.menu_archivos.add_command(
+            label="Nuevo", accelerator="Ctrl+N", command = archivo_nuevo)
+        self.menu_archivos.add_command(
+            label="Abrir", accelerator="Ctrl+A", command= abrir_archivo)
+        self.menu_archivos.add_command(
+            label="Guardar", accelerator="Ctrl+G", command=archivo_nuevo_presionado)
         self.menu_archivos.add_command(label="")
         self.menu_archivos.add_separator()# agrega linea divisoria        
-        self.menu_archivos.add_command(label="Salir",accelerator="Ctrl+S", command=archivo_nuevo_presionado)
+        self.menu_archivos.add_command(
+            label="Salir",accelerator="Ctrl+S", command=archivo_nuevo_presionado)
         # al precionar archivo le decimos que se despliegue hacia abajo
         self.barra_menus.add_cascade(menu=self.menu_archivos, label="Archivo")
 
         # colocamos menu herramientas dentro de barra_menus
         self.menu_herramientas = tk.Menu(self.barra_menus, tearoff=False)
         # agregamos todos los comandos que va a tener el menu herramientas
-        self.menu_herramientas.add_command(label="Fuente", accelerator="Ctrl+F", command=archivo_nuevo_presionado)
-        self.menu_herramientas.add_command(label="Tamaño", accelerator="Ctrl+T", command=archivo_nuevo_presionado)
-        self.menu_herramientas.add_command(label="Color", accelerator="Ctrl+C", command=archivo_nuevo_presionado)
+        self.menu_herramientas.add_command(
+            label="Fuente", accelerator="Ctrl+F", command=archivo_nuevo_presionado)
+        self.menu_herramientas.add_command(
+            label="Tamaño", accelerator="Ctrl+T", command=archivo_nuevo_presionado)
+        self.menu_herramientas.add_command(
+            label="Color", accelerator="Ctrl+C", command=archivo_nuevo_presionado)
         # al precionar herramientas le decimos que despliegue hacia abajo
         self.barra_menus.add_cascade(menu=self.menu_herramientas, label="Herramientas")
         self.config(menu=self.barra_menus)

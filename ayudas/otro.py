@@ -15,6 +15,6 @@ menu.add_command(label="Opción 1")
 menu.add_command(label="Opción 2")  
 
 boton.bind("<Enter>", mostrar_menu)  # Mostrar menú al pasar el cursor  
-boton.bind("<Leave>", cerrar_menu)    # Cerrar menú al salir el cursor  
+root.bind("<Leave>", cerrar_menu)    # Cerrar menú al salir el cursor  
 
 root.mainloop()
