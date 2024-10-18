@@ -3,6 +3,7 @@ from tkinter import ttk
 import utileria.util_ventana as util_ventana
 from config import *
 from tkinter import scrolledtext, filedialog
+import formulario.funciones as fn
 
 class FormularioPrincipal(tk.Tk):
     
@@ -42,7 +43,9 @@ class FormularioPrincipal(tk.Tk):
         self.text.pack(ipadx=250, ipady=1200, padx=50, pady=(20,0))
 
     def configuracion_buttons(self):
-
+        # creamos txt con direccion del archivo
+        archivo_abierto = "Nuevo archivo.txt"
+        fn.direccion_archivo(archivo_abierto)
         # funcion que va a desplegar menu
         def archivo_nuevo_presionado():
             print("¡Has presionado para crear un nuevo archivo!")
@@ -57,6 +60,8 @@ class FormularioPrincipal(tk.Tk):
                                                             ("Todos los archivos", "*.*")])
             # si archivo == true
             if archivo:
+                archivo_abierto = archivo
+                fn.direccion_archivo(archivo_abierto)
                 # abrimos el archivo en modo lectura
                 with open(archivo, "r") as f:
                     # almacenamos el texto en la variable contenido
@@ -65,6 +70,22 @@ class FormularioPrincipal(tk.Tk):
                     self.text.delete(1.0, tk.END)
                     # insertamos en la hoja el texto de dentro de contenido
                     self.text.insert(tk.END, contenido)
+            
+        
+        def archivo_guardar(): 
+            archivo_abierto = fn.nombre_archivo()
+            texto = self.text.get(1.0, 'end')  # Obtener el texto  
+            with open(archivo_abierto, 'w') as archivo:  # Abrir o crear un archivo  
+                archivo.write(texto)  # Escribir el texto en el archivo  
+        
+        '''def archivo_guardar_como():
+            ruta = filedialog.askopenfilename(defaultextension=".txt",
+                                              filetypes=[("Archivos de texto", ".txt"),
+                                                         ("Todos los archivos", "*.*")])
+            if ruta:
+                with open(ruta, "w") as archivo:
+                    archivo.write(self.text.get(1.0, "end"))'''
+
 
         #  ---creamos el menu desplegable---
         # colocamos menu_archivos dentro de barra_menus
@@ -73,9 +94,11 @@ class FormularioPrincipal(tk.Tk):
         self.menu_archivos.add_command(
             label="Nuevo", accelerator="Ctrl+N", command = archivo_nuevo)
         self.menu_archivos.add_command(
-            label="Abrir", accelerator="Ctrl+A", command= abrir_archivo)
+            label="Abrir", accelerator="Ctrl+A", command = abrir_archivo)
         self.menu_archivos.add_command(
-            label="Guardar", accelerator="Ctrl+G", command=archivo_nuevo_presionado)
+            label="Guardar", accelerator="Ctrl+G", command=archivo_guardar)
+        '''self.menu_archivos.add_command(
+            label="Guardar como", accelerator="Ctrl+G", command=archivo_guardar_como)'''
         self.menu_archivos.add_command(label="")
         self.menu_archivos.add_separator()# agrega linea divisoria        
         self.menu_archivos.add_command(
