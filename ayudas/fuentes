@@ -1,0 +1,10 @@
+import tkinter as tk  
+from tkinter import font  
+
+root = tk.Tk()  
+
+# Obtener una lista de fuentes  
+fuentes = list(font.families())  
+print(fuentes)  
+
+root.mainloop()
